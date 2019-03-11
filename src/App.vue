@@ -1,111 +1,71 @@
 <template>
-  <div class="todo-container">
-    <div class="todo-wrap">
-      <Header @addTodo="addTodo"/><!--绑定自定义的事件监听-->
-      <List :todos="todos"/>
-      <Footer>
-        <input type="checkbox" v-model="isSelectAll" slot="left"/>
-        <span slot="middle">
-          <span>已完成{{completeSize}}</span> / 全部{{todos.length}}
-        </span>
-        <button class="btn btn-danger" v-show="completeSize" @click="clearCompleteTodos" slot="right">清除已完成任务</button>
-      </Footer>
-    </div>
+  <div>
+    <p v-if="!repoName">loading...</p>
+    <p v-else>most star repo is <a :href="repoUrl">{{repoName}}</a></p>
   </div>
 </template>
 <script>
-  import PubSub from 'pubsub-js'
-  import Header from './components/Header.vue'
-  import List from './components/List.vue'
-  import Footer from './components/Footer.vue'
-
-  import storageUtils from './utils/storageUtils'
-
+  import axios from 'axios'
   export default {
     data () {
       return {
-        // 如果本地没有数据, todos的值为[]
-        todos: []
+        repoName: '',
+        repoUrl: ''
       }
     },
 
-    mounted () {
-      setTimeout(() => {
-        const todos = storageUtils.getTodos()
-        this.todos = todos
-      }, 1000)
+    async mounted () {
+      const url = 'https://api.github.com/search/repositories?q=j&sort=stars'
+      // 使用vue-resource发ajax请求
+      /*this.$http.get(url).then(response => {
+        // 取出响应数据
+        const result = response.data
+        const {name, html_url} = result.items[0]
+        // 更新状态数据
+        this.repoName = name
+        this.repoUrl = html_url
+      }).catch(error => {
+        alert('请求出错!')
+      })*/
 
-      // 订阅消息
-      PubSub.subscribe('deleteTodo', (msg, index) => {
-        this.deleteTodo(index)
-      })
-    },
+      // 使用axios发ajax请求
+      /*axios.get(url).then(response => {
+        // 取出响应数据
+        const result = response.data
+        const {name, html_url} = result.items[0]
+        // 更新状态数据
+        this.repoName = name
+        this.repoUrl = html_url
+      }).catch(error => {
+        alert('请求出错22!')
+      })*/
 
-    computed: {
-      completeSize () {
-        return this.todos.reduce((pre, todo) => pre + (todo.complete ? 1 : 0), 0)
-      },
-      isSelectAll: {
-        get () {
-          return this.todos.length===this.completeSize && this.completeSize>0
-        },
-
-        set (value) { // value是true/false
-          this.selectAll(value)
-        }
+      try {
+        const response = await axios.get(url)  // 内部调用resolve(response)
+        // 取出响应数据
+        const result = response.data
+        const {name, html_url} = result.items[0]
+        // 更新状态数据
+        this.repoName = name
+        this.repoUrl = html_url
+      } catch(error) {
+        alert('请求出错22!')
       }
-    },
 
-    methods: {
-      // 添加todo
-      addTodo (todo) {
-        this.todos.unshift(todo)
-      },
-      // 删除todo
-      deleteTodo (index) {
-        this.todos.splice(index, 1)
-      },
-
-      // 清除所有已完成的todo
-      clearCompleteTodos () {
-        this.todos = this.todos.filter(todo => !todo.complete)
-      },
-
-      // 对所有todo进行全选/全不选
-      selectAll (check) {
-        this.todos.forEach(todo => todo.complete = check)
-      }
-    },
-
-    watch: {
-      todos: {
-        deep: true, // 深度监视
-        /*handler: function (value) {
-          // 将最新的todos的json数据保存到localStorage
-          storageUtils.saveTodos(value)
-        }*/
-        handler: storageUtils.saveTodos
-        /*handler: function (todos) {
-          localStorage.setItem(TODOS_KEY, JSON.stringify(todos))
-        }*/
-      }
-    },
-
-    components: {
-      Header,
-      List,
-      Footer
     }
   }
+
+
+  /*
+  1. async/await的作用?
+     简化promise的使用, 不再使用.then()或.catch()来指定成功或失败的回调函数(消灭回调函数)
+     以同步的编码方式实现异步流程
+  2. 哪里用await
+    在返回promise对象的表达式左侧(想得到的不是promise, 而是想要异步执行返回的结果)
+  3. 哪里用async
+    await所在函数定义的左侧
+   */
 </script>
 <style scoped>
-  .todo-container {
-    width: 600px;
-    margin: 0 auto;
-  }
-  .todo-container .todo-wrap {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
+
 </style>
