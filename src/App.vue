@@ -2,12 +2,19 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <Header @addTodo="addTodo"/><!--绑定自定义的事件监听-->
-      <List :todos="todos" :deleteTodo="deleteTodo"/>
-      <Footer :todos="todos" :clearCompleteTodos="clearCompleteTodos" :selectAll="selectAll"/>
+      <List :todos="todos"/>
+      <Footer>
+        <input type="checkbox" v-model="isSelectAll" slot="left"/>
+        <span slot="middle">
+          <span>已完成{{completeSize}}</span> / 全部{{todos.length}}
+        </span>
+        <button class="btn btn-danger" v-show="completeSize" @click="clearCompleteTodos" slot="right">清除已完成任务</button>
+      </Footer>
     </div>
   </div>
 </template>
 <script>
+  import PubSub from 'pubsub-js'
   import Header from './components/Header.vue'
   import List from './components/List.vue'
   import Footer from './components/Footer.vue'
@@ -27,6 +34,26 @@
         const todos = storageUtils.getTodos()
         this.todos = todos
       }, 1000)
+
+      // 订阅消息
+      PubSub.subscribe('deleteTodo', (msg, index) => {
+        this.deleteTodo(index)
+      })
+    },
+
+    computed: {
+      completeSize () {
+        return this.todos.reduce((pre, todo) => pre + (todo.complete ? 1 : 0), 0)
+      },
+      isSelectAll: {
+        get () {
+          return this.todos.length===this.completeSize && this.completeSize>0
+        },
+
+        set (value) { // value是true/false
+          this.selectAll(value)
+        }
+      }
     },
 
     methods: {
