@@ -7,12 +7,12 @@
 <script>
   export default {
     // 声明接收属性: 属性名/属性值的类型/属性的必要性
-    /*props: {
+    props: {
       addTodo: {
         type: Function,
         required: true
       }
-    },*/
+    },
 
     data () {
       return {
@@ -35,9 +35,7 @@
           complete: false
         }
         // 4. 调用更新函数添加todo
-        // this.addTodo(todo)
-        // 触发/分发事件(addTodo)
-        this.$emit('addTodo', todo)
+        this.addTodo(todo)
         // 5. 清除输入
         this.title = ''
       }

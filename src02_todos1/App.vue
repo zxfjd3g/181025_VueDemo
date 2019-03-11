@@ -1,7 +1,7 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <Header @addTodo="addTodo"/><!--绑定自定义的事件监听-->
+      <Header :addTodo="addTodo"/>
       <List :todos="todos" :deleteTodo="deleteTodo"/>
       <Footer :todos="todos" :clearCompleteTodos="clearCompleteTodos" :selectAll="selectAll"/>
     </div>
