@@ -19,8 +19,11 @@
       <div class="col-xs-6">
         <div class="panel">
           <div class="panel-body">
-            <!--将当前路由组件显示在此-->
-            <router-view/>
+            <!--缓存路由组件对象-->
+            <keep-alive>
+              <!--将当前路由组件显示在此-->
+              <router-view msg="abc"/>
+            </keep-alive>
           </div>
         </div>
       </div>
@@ -30,7 +33,13 @@
 <script>
   export default {
 
-    methods: {}
+    methods: {
+      data () {
+        return {
+          abc: 'atguigu'
+        }
+      }
+    }
   }
 </script>
 <style scoped>

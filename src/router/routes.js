@@ -5,6 +5,7 @@ import About from '../views/About.vue'
 import Home from '../views/Home.vue'
 import News from '../views/News.vue'
 import Message from '../views/Message.vue'
+import MessageDetail from '../views/MessageDetail.vue'
 
 export default [
   {
@@ -21,7 +22,14 @@ export default [
       },
       {
         path: 'message',  // path最左边的/代表项目根路径
-        component: Message
+        component: Message,
+        children: [
+          {
+            name: 'detail',
+            path: '/home/message/detail/:id',  // /home/message/detail/3
+            component: MessageDetail
+          }
+        ]
       },
       {
         path: '',
