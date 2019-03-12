@@ -1,70 +1,37 @@
 <template>
   <div>
-    <p v-if="!repoName">loading...</p>
-    <p v-else>most star repo is <a :href="repoUrl">{{repoName}}</a></p>
+    <div class="row">
+      <div class="col-xs-offset-2 col-xs-8">
+        <div class="page-header"><h2>Router Basic - 01</h2></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-2 col-xs-offset-2">
+        <div class="list-group">
+          <!--<a href="#/about" class="list-group-item router-link-exact-active activeClass">About</a>
+          <a href="#/home" class="list-group-item">Home</a>-->
+          <!--路由链接-->
+          <router-link class="list-group-item" to="/about">About</router-link>
+          <router-link class="list-group-item" to="/home">Home</router-link>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="panel">
+          <div class="panel-body">
+            <!--将当前路由组件显示在此-->
+            <router-view/>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-  import axios from 'axios'
   export default {
-    data () {
-      return {
-        repoName: '',
-        repoUrl: ''
-      }
-    },
 
-    async mounted () {
-      const url = 'https://api.github.com/search/repositories?q=j&sort=stars'
-      // 使用vue-resource发ajax请求
-      /*this.$http.get(url).then(response => {
-        // 取出响应数据
-        const result = response.data
-        const {name, html_url} = result.items[0]
-        // 更新状态数据
-        this.repoName = name
-        this.repoUrl = html_url
-      }).catch(error => {
-        alert('请求出错!')
-      })*/
-
-      // 使用axios发ajax请求
-      /*axios.get(url).then(response => {
-        // 取出响应数据
-        const result = response.data
-        const {name, html_url} = result.items[0]
-        // 更新状态数据
-        this.repoName = name
-        this.repoUrl = html_url
-      }).catch(error => {
-        alert('请求出错22!')
-      })*/
-
-      try {
-        const response = await axios.get(url)  // 内部调用resolve(response)
-        // 取出响应数据
-        const result = response.data
-        const {name, html_url} = result.items[0]
-        // 更新状态数据
-        this.repoName = name
-        this.repoUrl = html_url
-      } catch(error) {
-        alert('请求出错22!')
-      }
-
-    }
+    methods: {}
   }
-
-
-  /*
-  1. async/await的作用?
-     简化promise的使用, 不再使用.then()或.catch()来指定成功或失败的回调函数(消灭回调函数)
-     以同步的编码方式实现异步流程
-  2. 哪里用await
-    在返回promise对象的表达式左侧(想得到的不是promise, 而是想要异步执行返回的结果)
-  3. 哪里用async
-    await所在函数定义的左侧
-   */
 </script>
 <style scoped>
 
