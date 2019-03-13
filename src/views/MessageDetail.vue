@@ -26,7 +26,8 @@
     },
 
     watch: {
-      $route: function (to, from) {
+      '$route': function (to, from) {
+        debugger
         if(to.path.indexOf('/home/message/detail/')!=0) {
           return
         }
