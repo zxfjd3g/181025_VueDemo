@@ -16,8 +16,10 @@ function MVVM(options) {
     me._proxy(key);
   });
 
+  // 对data中所有层次属性实现劫持/监视
   observe(data, this);
 
+  // 创建用于编译/解析模板的compile对象
   this.$compile = new Compile(options.el || document.body, this)
 }
 
