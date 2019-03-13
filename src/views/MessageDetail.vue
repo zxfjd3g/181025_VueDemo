@@ -27,6 +27,10 @@
 
     watch: {
       $route: function (to, from) {
+        if(to.path.indexOf('/home/message/detail/')!=0) {
+          return
+        }
+        console.log('$route()', to, from)
         // 根据请求参数中的id查找到对应的detail对象显示
         this.showDetail(to)
       }

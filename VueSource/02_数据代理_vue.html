@@ -6,6 +6,22 @@
 </head>
 <body>
 
+<div id="test"></div>
 
+<script type="text/javascript" src="./js/vue.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#test',
+    data: {
+      name: 'Tom'
+    }
+  })
+  console.log(vm)
+  console.log(vm.name, vm._data.name) // 代理读操作  getter
+  vm.name = 'Jack' // 代理写操作  setter
+  console.log(vm._data.name) // Jack
+
+
+</script>
 </body>
 </html>
