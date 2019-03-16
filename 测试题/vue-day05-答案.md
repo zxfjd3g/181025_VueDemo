@@ -23,6 +23,7 @@
     1). 作用:
        实现数据的更新显示
     2). 基本原理:
+        2个核心技术: 数据劫持/监视(Object.defineProperterty()) + 消息订阅与发布(dep与watcher)
        a.通过Object.defineProperterty()给data中所有属性添加setter/getter, 实现数据劫持
        b.为每个data中的属性创建一个对应的dep对象, 一旦属性数据变化, 通知dep对象
        c.为模板中的每个表达式创建对应的watcher, 并关联到对应的dep上
