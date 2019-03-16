@@ -1,31 +1,19 @@
 <template>
-  <div>
-    <p>clicked {{$store.state.count}} times, count is {{$store.getters.evenOrOdd}}</p>
-
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-    <button @click="incrementIfOdd">increment if odd</button>
-    <button @click="incrementAsync">increment async</button>
+  <div class="container">
+    <Search/>
+    <Main/>
   </div>
 </template>
 <script>
+  import Search from './components/Search.vue'
+  import Main from './components/Main.vue'
   export default {
-
-    methods: {
-      increment () {
-        this.$store.dispatch('increment')
-      },
-      decrement () {
-        this.$store.dispatch('decrement')
-      },
-      incrementIfOdd () {
-        this.$store.dispatch('incrementIfOdd')
-      },
-      incrementAsync () {
-        this.$store.dispatch('incrementAsync')
-      },
+    components: {
+      Search,
+      Main
     }
   }
+
 </script>
 <style scoped>
 

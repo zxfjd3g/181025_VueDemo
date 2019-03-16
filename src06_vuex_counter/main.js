@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from './store/index'
+
+import store from './store'
+
 
 new Vue({
   el: '#app',
@@ -8,6 +10,5 @@ new Vue({
     App
   },
   template: '<App />',
-  store
-
+  store, // 注册vuex的store  ==> 所有组件对象都有一个属性$store
 })
